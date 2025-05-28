@@ -20,15 +20,26 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      # Step 3: Install NPM dependencies
-      - name: Install dependencies
+      # Step 3: Setup PHP and Composer
+      - name: Setup PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer:v2
+
+      # Step 4: Install Composer dependencies
+      - name: Install PHP dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+      # Step 5: Install NPM dependencies
+      - name: Install NPM dependencies
         run: npm install
 
-      # Step 4: Run the build
+      # Step 6: Run the build
       - name: Build assets
         run: npm run build
 
-      # Step 5: Upload /public/build as an artifact
+      # Step 7: Upload /public/build as an artifact
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
